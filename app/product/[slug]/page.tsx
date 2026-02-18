@@ -1,4 +1,7 @@
 export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
+
 import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import { notFound } from "next/navigation";
