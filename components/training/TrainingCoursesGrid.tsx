@@ -2,31 +2,52 @@ import Link from "next/link";
 import Image from "next/image";
 
 async function getTrainingProducts() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_WC_STORE_API}/products?category=147&per_page=100`,
-    { cache: "no-store" }
-  );
+  try {
+    const base = process.env.NEXT_PUBLIC_WC_STORE_API;
 
-  if (!res.ok) return [];
+    if (!base) {
+      console.error("WC_STORE_API is missing");
+      return [];
+    }
 
-  return await res.json();
+    const res = await fetch(
+      `${base}/products?category=147&per_page=100`,
+      { cache: "no-store" }
+    );
+
+    if (!res.ok) {
+      console.error("Training fetch failed:", res.status);
+      return [];
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Training fetch error:", error);
+    return [];
+  }
 }
 
 export default async function TrainingCoursesGrid() {
   const products = await getTrainingProducts();
 
+  if (!products || products.length === 0) {
+    return (
+      <section className="py-20 text-center">
+        <p>No training courses available right now.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
 
-        {/* HEADING */}
         <div className="text-center mb-14">
           <h2 className="text-[36px] font-bold text-[#0b2b3c] leading-tight">
             Click on any training option to view our online course costs for complete value.
           </h2>
         </div>
 
-        {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product: any) => {
             const image =
@@ -39,7 +60,7 @@ export default async function TrainingCoursesGrid() {
                 href={`/training/${product.slug}`}
                 className="group block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition duration-300"
               >
-                <div className="relative w-full aspect-square ]">
+                <div className="relative w-full aspect-square">
                   <Image
                     src={image}
                     alt={product.name}
