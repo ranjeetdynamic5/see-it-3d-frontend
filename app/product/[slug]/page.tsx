@@ -1,10 +1,9 @@
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 
-
-import { wcApi } from "@/lib/woocommerce";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { getProductBySlug } from "@/lib/woocommerce";
 
 type Props = {
   params: {
@@ -15,45 +14,39 @@ type Props = {
 export default async function ProductPage({ params }: Props) {
   const { slug } = params;
 
-  const res = await wcApi.get("products", {
-    slug,
-  });
-
-  const product = res.data?.[0];
+  const product = await getProductBySlug(slug);
 
   if (!product) return notFound();
 
+  const image = product.images?.[0]?.src || "";
+  const price =
+    product.prices?.price
+      ? (product.prices.price / 100).toFixed(2)
+      : null;
+
   return (
     <main className="max-w-5xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+      <h1 className="text-3xl font-bold mb-4">
+        {product.name}
+      </h1>
 
-      <p className="text-xl font-semibold mb-6">£{product.price}</p>
-
-      {product.images?.[0]?.src && (
-        <Image
-          src={product.images[0].src}
-          alt={product.name}
-          width={500}
-          height={500}
-          priority
-          className="rounded-lg mb-6"
-        />
+      {price && (
+        <p className="text-xl font-semibold mb-6">
+          {product.prices.currency_prefix}
+          {price}
+        </p>
       )}
 
-      {product.description && (
-        <div
-          className="prose max-w-none"
-          dangerouslySetInnerHTML={{ __html: product.description }}
-        />
+      {image && (
+        <div className="relative w-full max-w-md aspect-square mb-8">
+          <Image
+            src={image}
+            alt={product.name}
+            fill
+            className="object-cover"
+          />
+        </div>
       )}
-
-      {/* Add to cart – WooCommerce default checkout */}
-      <a
-        href={`${process.env.NEXT_PUBLIC_WC_API_URL}/checkout/?add-to-cart=${product.id}`}
-        className="inline-block mt-8 bg-black text-white px-6 py-3 rounded hover:bg-gray-800"
-      >
-        Add to Cart
-      </a>
     </main>
   );
 }

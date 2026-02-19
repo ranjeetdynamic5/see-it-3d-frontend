@@ -1,53 +1,60 @@
-import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
+// ✅ Base Store API URL
+const baseUrl = process.env.NEXT_PUBLIC_WC_STORE_API;
 
-// ✅ Server-side only environment variables
-const apiUrl = process.env.WC_API_URL as string;
-const consumerKey = process.env.WC_CONSUMER_KEY as string;
-const consumerSecret = process.env.WC_CONSUMER_SECRET as string;
-
-if (!apiUrl || !consumerKey || !consumerSecret) {
-  throw new Error("WooCommerce environment variables are missing.");
+if (!baseUrl) {
+  throw new Error("NEXT_PUBLIC_WC_STORE_API is missing.");
 }
 
-// ✅ Woo API instance
-export const wcApi = new WooCommerceRestApi({
-  url: apiUrl,
-  consumerKey: consumerKey,
-  consumerSecret: consumerSecret,
-  version: "wc/v3",
-});
-
-// ✅ Generic safe request wrapper
-async function safeWooRequest(endpoint: string, params?: any) {
+/* --------------------------------------------------
+   GENERIC SAFE STORE API FETCH
+-------------------------------------------------- */
+async function storeFetch(endpoint: string) {
   try {
-    const response = await wcApi.get(endpoint, params);
-    return response.data;
-  } catch (error: any) {
-    console.error(`Woo API Error (${endpoint}):`, error?.response?.data || error.message);
-    return [];
+    const res = await fetch(`${baseUrl}/${endpoint}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      console.error("Store API error:", res.status);
+      return null;
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Store API crash:", error);
+    return null;
   }
 }
 
-// ✅ Get Training Products
+/* --------------------------------------------------
+   GET TRAINING PRODUCTS (by category slug)
+-------------------------------------------------- */
 export async function getTrainingProducts() {
-  return await safeWooRequest("products", {
-    category: "training", // ⚠ slug confirm kar lena
-    per_page: 20,
-  });
+  const data = await storeFetch(
+    "products?category=training&per_page=20"
+  );
+
+  return data || [];
 }
 
-// ✅ Get All Products (for homepage/shop)
+/* --------------------------------------------------
+   GET ALL PRODUCTS (Homepage / Shop)
+-------------------------------------------------- */
 export async function getProducts(limit = 10) {
-  return await safeWooRequest("products", {
-    per_page: limit,
-  });
+  const data = await storeFetch(
+    `products?per_page=${limit}`
+  );
+
+  return data || [];
 }
 
-// ✅ Get Single Product by Slug
+/* --------------------------------------------------
+   GET SINGLE PRODUCT BY SLUG
+-------------------------------------------------- */
 export async function getProductBySlug(slug: string) {
-  const products = await safeWooRequest("products", {
-    slug: slug,
-  });
+  const data = await storeFetch(
+    `products?slug=${slug}`
+  );
 
-  return products?.[0] || null;
+  return data?.[0] || null;
 }
