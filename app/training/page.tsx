@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic";
-
-
 import TrainingHero from "@/components/training/TrainingHero";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
 import TrainingQuickActions from "@/components/training/TrainingQuickActions";

@@ -6,7 +6,6 @@ import Image from "next/image";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const cartCount = 0;
 
   useEffect(() => {
@@ -14,178 +13,133 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="site-header relative z-50">
-
+    <header className="relative z-50 w-full bg-white shadow-sm">
+      
       {/* ================= TOP BAR ================= */}
-      <div className="top-bar">
-        <div className="top-bar-inner">
-
-          <div className="top-contact">
-            <span className="icon-text">
-              <Image src="/icons/call.png" alt="Call" width={16} height={16} />
-              03331212187
+      <div className="bg-gray-100 text-sm">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-2">
+          
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-2">
+              📞 03331212187
             </span>
-
-            <span className="icon-text">
-              <Image src="/icons/email.png" alt="Email" width={16} height={16} />
-              jamesogston@seeit3d.co.uk
+            <span className="flex items-center gap-2">
+              ✉ jamesogston@seeit3d.co.uk
             </span>
           </div>
 
-          <div className="top-social">
-            <a href="https://www.facebook.com/SeeIt3d" target="_blank">
-              <Image src="/icons/fb.png" alt="Facebook" width={40} height={40} />
-            </a>
-            <a href="https://www.instagram.com/seeit3dwithjames/" target="_blank">
-              <Image src="/icons/inta.png" alt="Instagram" width={40} height={40} />
-            </a>
-            <a href="https://www.youtube.com/user/SEEIT3D" target="_blank">
-              <Image src="/icons/yt.png" alt="YouTube" width={40} height={40} />
-            </a>
-            <a href="https://x.com/SeeIt3D" target="_blank">
-              <Image src="/icons/x.png" alt="X" width={40} height={40} />
-            </a>
-          </div>
-
-          <div className="top-actions">
-            <Link href="/support">Support</Link>
-            <Link href="/shop">Shop</Link>
-            <Link href="/signup">Sign Up</Link>
-
-            <Link href="/account" className="account-link">
-              <Image src="/icons/profile.png" alt="Account" width={20} height={20} />
-              <span>Account</span>
+          <div className="flex items-center gap-3">
+            <Link href="/support" className="bg-red-500 text-white px-3 py-1 rounded">
+              Support
             </Link>
-
-            {/* Cart */}
-            <Link href="/cart" className="cart-link">
-              <Image src="/icons/cart.png" alt="Cart" width={22} height={22} />
-              {cartCount > 0 && (
-                <span className="cart-count">{cartCount}</span>
-              )}
+            <Link href="/shop" className="bg-red-500 text-white px-3 py-1 rounded">
+              Shop
+            </Link>
+            <Link href="/signup" className="bg-red-500 text-white px-3 py-1 rounded">
+              Sign Up
             </Link>
           </div>
-
         </div>
       </div>
 
       {/* ================= MAIN NAV ================= */}
-      <div className="main-nav">
-        <div className="main-nav-inner">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
+        
+        <Link href="/">
+          <Image
+            src="/icons/seeit_logo.jpg"
+            alt="Logo"
+            width={200}
+            height={50}
+            priority
+          />
+        </Link>
 
-          <Link href="/" className="logo-wrap">
-            <Image
-              src="/icons/seeit_logo.jpg"
-              alt="SeeIt3D Logo"
-              width={250}
-              height={55}
-              priority
-            />
-          </Link>
+        <nav className="hidden md:flex items-center gap-6 font-medium text-gray-800">
 
-          <nav className="desktop-menu">
-            <NavLinks />
-          </nav>
+          <Link href="/about" className="hover:text-red-500">About</Link>
+          <Link href="/events" className="hover:text-red-500">Events</Link>
+          <Link href="/training" className="hover:text-red-500">Online Training</Link>
 
-          <button
-            className="mobile-menu-btn"
-            onClick={() => setMenuOpen(true)}
-          >
-            ☰
-          </button>
-        </div>
+          {/* ================= SKETCHUP DROPDOWN ================= */}
+          <div className="relative group">
+
+            <div className="flex items-center gap-1 cursor-pointer hover:text-red-500">
+              <span>SketchUp</span>
+              <span className="group-hover:hidden">+</span>
+              <span className="hidden group-hover:inline">-</span>
+            </div>
+
+            <div className="absolute left-0 top-full mt-2 w-56 bg-white border border-gray-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+
+              <Link
+                href="/sketchup-services"
+                className="block px-4 py-3 hover:bg-gray-200 hover:text-white bg-gray-700 text-white"
+              >
+                SketchUp Services
+              </Link>
+
+              <Link
+                href="/sketchup-extensions"
+                className="block px-4 py-3 hover:bg-gray-200"
+              >
+                Skp Extensions
+              </Link>
+
+              <Link
+                href="/sketchup-resources"
+                className="block px-4 py-3 hover:bg-gray-200"
+              >
+                SketchUp Resources
+              </Link>
+
+            </div>
+          </div>
+
+          <Link href="/products" className="hover:text-red-500">Products</Link>
+          <Link href="/services" className="hover:text-red-500">Web Services</Link>
+          <Link href="/rendering" className="hover:text-red-500">Rendering</Link>
+          <Link href="/shop" className="hover:text-red-500">Shop</Link>
+          <Link href="/blog" className="hover:text-red-500">Blog</Link>
+          <Link href="/contact" className="hover:text-red-500">Contact Us</Link>
+
+        </nav>
+
+        {/* Mobile Toggle */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setMenuOpen(true)}
+        >
+          ☰
+        </button>
       </div>
 
       {/* ================= MOBILE MENU ================= */}
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        <button
-          className="mobile-menu-close"
-          onClick={() => setMenuOpen(false)}
-        >
-          ✕
-        </button>
+      {menuOpen && (
+        <div className="fixed inset-0 bg-white z-50 p-6">
+          <button
+            className="text-2xl mb-6"
+            onClick={() => setMenuOpen(false)}
+          >
+            ✕
+          </button>
 
-        <nav className="mobile-nav">
-          <NavLinks onClick={() => setMenuOpen(false)} />
-        </nav>
-      </div>
-
-    </header>
-  );
-}
-
-/* ================= NAV LINKS ================= */
-
-function NavLinks({ onClick }: { onClick?: () => void }) {
-  return (
-    <div className="nav-links flex items-center gap-6 relative" onClick={onClick}>
-
-      <Link href="/about">About</Link>
-      <Link href="/events">Events</Link>
-      <Link href="/training">Online Training</Link>
-
-      {/* ===== SketchUp Dropdown ===== */}
-      <div className="relative group">
-
-        <div className="flex items-center gap-1 cursor-pointer hover:text-red-500 transition">
-          <span>SketchUp</span>
-          <span className="group-hover:hidden">+</span>
-          <span className="hidden group-hover:inline">-</span>
-        </div>
-
-        <div className="absolute left-0 mt-3 w-72 
-                        opacity-0 invisible 
-                        group-hover:opacity-100 group-hover:visible 
-                        transition-all duration-200">
-
-          <div className="bg-white shadow-xl rounded-lg overflow-hidden border divide-y">
-
-            <Link href="/sketchup-services"
-              className="block px-5 py-3 font-semibold bg-[#2f3b46] text-white">
-              SketchUp Services
-            </Link>
-
-            <Link href="/sketchup-bim-services"
-              className="block px-5 py-3 text-gray-800 hover:bg-gray-100 hover:text-red-500 transition">
-              BIM Services
-            </Link>
-
-            <Link href="/sketchup-3d-modelling-services"
-              className="block px-5 py-3 text-gray-800 hover:bg-gray-100 hover:text-red-500 transition">
-              3D Modelling
-            </Link>
-
-            <Link href="/sketchup-rendering-services"
-              className="block px-5 py-3 text-gray-800 hover:bg-gray-100 hover:text-red-500 transition">
-              Rendering
-            </Link>
-
-            <Link href="/sketchup-training"
-              className="block px-5 py-3 text-gray-800 hover:bg-gray-100 hover:text-red-500 transition">
-              Training
-            </Link>
-
-            <Link href="/sketchup-extensions"
-              className="block px-5 py-3 text-gray-800 hover:bg-gray-100 hover:text-red-500 transition">
-              Extensions
-            </Link>
-
-            <Link href="/sketchup-resources"
-              className="block px-5 py-3 text-gray-800 hover:bg-gray-100 hover:text-red-500 transition">
-              Resources
-            </Link>
-
+          <div className="flex flex-col gap-4 text-lg">
+            <Link href="/about">About</Link>
+            <Link href="/events">Events</Link>
+            <Link href="/training">Online Training</Link>
+            <Link href="/sketchup-services">SketchUp Services</Link>
+            <Link href="/sketchup-extensions">Skp Extensions</Link>
+            <Link href="/sketchup-resources">SketchUp Resources</Link>
+            <Link href="/products">Products</Link>
+            <Link href="/services">Web Services</Link>
+            <Link href="/rendering">Rendering</Link>
+            <Link href="/shop">Shop</Link>
+            <Link href="/blog">Blog</Link>
+            <Link href="/contact">Contact</Link>
           </div>
         </div>
-      </div>
-
-      <Link href="/products">Products</Link>
-      <Link href="/services">Web Services</Link>
-      <Link href="/rendering">Rendering</Link>
-      <Link href="/shop">Shop</Link>
-      <Link href="/blog">Blog</Link>
-      <Link href="/contact">Contact Us</Link>
-
-    </div>
+      )}
+    </header>
   );
 }
