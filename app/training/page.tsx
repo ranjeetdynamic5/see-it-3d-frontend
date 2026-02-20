@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
 
 import TrainingHero from "@/components/training/TrainingHero";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb";
