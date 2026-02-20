@@ -1,41 +1,51 @@
 import Link from "next/link";
-import { wcApi } from "@/lib/woocommerce";
+import Image from "next/image";
 
 export const metadata = {
   title: "Shop | See-IT-3D",
-  description:
-    "Browse professional 3D rendering services including interior, exterior and product visualization.",
 };
 
+async function getProducts() {
+  const base = process.env.NEXT_PUBLIC_WC_STORE_API;
+
+  if (!base) return [];
+
+  const res = await fetch(`${base}/products?per_page=20`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) return [];
+
+  return res.json();
+}
+
 export default async function ShopPage() {
-  const res = await wcApi.get("products");
-  const products = res.data;
+  const products = await getProducts();
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-bold mb-8">Our Services</h1>
+    <main className="max-w-7xl mx-auto px-4 py-16">
+      <h1 className="text-4xl font-bold mb-10">Shop</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {products.map((product: any) => (
-          <div
+          <Link
             key={product.id}
-            className="border rounded-xl p-6 hover:shadow-lg transition"
+            href={`/product/${product.slug}`}
+            className="group block shadow-md rounded-xl overflow-hidden"
           >
-            <h2 className="text-xl font-semibold mb-2">
-              {product.name}
-            </h2>
+            <div className="relative w-full aspect-square">
+              <Image
+                src={product.images?.[0]?.src || "/placeholder.jpg"}
+                alt={product.name}
+                fill
+                className="object-cover group-hover:scale-105 transition duration-300"
+              />
+            </div>
 
-            <p className="text-gray-600 mb-4">
-              £{product.price}
-            </p>
-
-            <Link
-              href={`/product/${product.slug}`}
-              className="inline-block bg-black text-white px-5 py-2 rounded-full text-sm hover:bg-gray-800 transition"
-            >
-              View details →
-            </Link>
-          </div>
+            <div className="p-4">
+              <h2 className="font-semibold">{product.name}</h2>
+            </div>
+          </Link>
         ))}
       </div>
     </main>
