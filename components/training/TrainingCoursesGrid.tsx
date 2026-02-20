@@ -1,11 +1,6 @@
-export const dynamic = "force-dynamic";
-
 import Link from "next/link";
 import Image from "next/image";
 
-/* ---------------------------------------------
-   FETCH TRAINING PRODUCTS (Store API)
---------------------------------------------- */
 async function getTrainingProducts() {
   try {
     const base = process.env.NEXT_PUBLIC_WC_STORE_API;
@@ -17,7 +12,7 @@ async function getTrainingProducts() {
 
     const res = await fetch(
       `${base}/products?category=training&per_page=100`,
-      { cache: "no-store" }
+      { next: { revalidate: 60 } } // ✅ FIXED
     );
 
     if (!res.ok) {
@@ -34,9 +29,6 @@ async function getTrainingProducts() {
   }
 }
 
-/* ---------------------------------------------
-   COMPONENT
---------------------------------------------- */
 export default async function TrainingCoursesGrid() {
   const products = await getTrainingProducts();
 
@@ -54,14 +46,12 @@ export default async function TrainingCoursesGrid() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
 
-        {/* HEADING */}
         <div className="text-center mb-14">
           <h2 className="text-[36px] font-bold text-[#0b2b3c] leading-tight">
             Click on any training option to view our online course costs for complete value.
           </h2>
         </div>
 
-        {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product: any) => {
             const image =
@@ -84,7 +74,6 @@ export default async function TrainingCoursesGrid() {
                   />
                 </div>
 
-                {/* Optional: Product Name Under Image */}
                 <div className="p-4 bg-white">
                   <h3 className="text-sm font-semibold text-[#0b2b3c] group-hover:text-red-500 transition">
                     {product.name}
