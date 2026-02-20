@@ -66,11 +66,15 @@ export default function Header() {
 
             <div className="flex items-center gap-1 cursor-pointer hover:text-red-500">
   <span>SketchUp</span>
-
-  <span className="relative w-3 inline-block text-center">
-    <span className="group-hover:hidden absolute inset-0">+</span>
-    <span className="hidden group-hover:block absolute inset-0">-</span>
-  </span>
+  <svg
+    className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+  >
+    <path d="M6 9l6 6 6-6" />
+  </svg>
 </div>
 
             <div className="absolute left-0 top-full mt-2 w-56 bg-white border border-gray-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
