@@ -748,3 +748,46 @@ body {
     font-size: 24px;
   }
 }
+.sk-icon {
+  display: inline-block;
+  width: 14px;       /* fixed width */
+  text-align: center;
+  margin-left: 6px;
+}
+.sk-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  min-width: 220px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.sk-dropdown a {
+  display: block;
+  padding: 12px 16px;
+  color: #222;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.sk-dropdown a:hover {
+  background: #3f4a52;   /* lighter gray */
+  color: #ffffff;        /* white text */
+}
+.sk-dropdown {
+  border-radius: 0;
+}
+.sk-dropdown {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.sk-parent:hover .sk-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
