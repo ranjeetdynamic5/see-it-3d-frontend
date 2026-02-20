@@ -65,10 +65,13 @@ export default function Header() {
           <div className="relative group">
 
             <div className="flex items-center gap-1 cursor-pointer hover:text-red-500">
-              <span>SketchUp</span>
-              <span className="group-hover:hidden">+</span>
-              <span className="hidden group-hover:inline">-</span>
-            </div>
+  <span>SketchUp</span>
+
+  <span className="relative w-3 inline-block text-center">
+    <span className="group-hover:hidden absolute inset-0">+</span>
+    <span className="hidden group-hover:block absolute inset-0">-</span>
+  </span>
+</div>
 
             <div className="absolute left-0 top-full mt-2 w-56 bg-white border border-gray-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
 
