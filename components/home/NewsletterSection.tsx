@@ -10,7 +10,7 @@ export default function NewsletterSection() {
               Join To Get Our Newsletter
             </h3>
             <p className="text-white/70 text-sm md:text-base max-w-xl">
-              Join the SEEIT3D community today and take your creativity to the next dimension!
+              Join the SEEIT23D community today and take your creativity to the next dimension!
             </p>
           </div>
 
